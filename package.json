@@ -1,0 +1,24 @@
+{
+  "name": "scrappy",
+  "version": "1.0.0",
+  "description": "Web scrapping app with push notifications",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js",
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pioplk/node-scrappy.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pioplk/node-scrappy/issues"
+  },
+  "homepage": "https://github.com/pioplk/node-scrappy#readme",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "cheerio": "^1.0.0-rc.5",
+    "express": "^4.17.1"
+  }
+}
