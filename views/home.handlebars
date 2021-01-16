@@ -4,14 +4,25 @@
     <tr>
         <th>Runs Count</th>
         <th>Runs Interval</th>
-        <th>Actions</th>
+        <th>Last run</th>
+        <th class="center aligned">State</th>
+        <th class="center aligned"></th>
     </tr>
     </thead>
     <tbody>
         <tr>
             <td><b>{{info.runsCount}}</b></td>
             <td>{{info.timeout}}</td>
-        </tr>
+            <td>{{info.lastRun}}</td>
+            <td class="center aligned"><a class="ui label {{info.state}}">{{info.state}}</a></td>
+            <td class="right aligned">
+                <div class="ui icon mini primary basic button"><i class="file code outline icon"></i> LOGS</div>
+                <div class="ui mini basic buttons">
+                    <div class="ui button {{#ifeq info.state 'STOPPED'}}active{{/ifeq}}" onclick="setRunnerState(0)">DISABLE</div>
+                    <div class="ui button {{#ifeq info.state 'RUNNING'}}active{{/ifeq}}" onclick="setRunnerState(1)">ENABLE</div>
+                </div>
+            </td>
+        </tr class="center aligned">
     </tbody>
 </table>
 
@@ -20,16 +31,22 @@
     <thead>
         <tr>
             <th>Name</th>
-            <th>State</th>
-            <th>Actions</th>
+            <th class="center aligned">State</th>
+            <th class="center aligned"></th>
         </tr>
     </thead>
     <tbody>
         {{#each info.tasks}}
         <tr class="{{this.state}}">
             <td><b>{{this.name}}</b></td>
-            <td> <a class="ui mini label {{this.state}}">{{this.state}}</a></td>
-            <td></td>
+            <td class="center aligned"> <a class="ui label {{this.state}}">{{this.state}}</a></td>
+            <td class="right aligned">
+                <div class="ui icon mini primary basic button"><i class="file code outline icon"></i> LOGS</div>
+                <div class="ui mini basic buttons">
+                    <div class="ui button {{#ifeq this.state 'STOPPED'}}active{{/ifeq}}" onclick="setTaskState({{this.index}}, 0)">DISABLE</div>
+                    <div class="ui button {{#ifeq this.state 'RUNNING'}}active{{/ifeq}}" onclick="setTaskState({{this.index}}, 1)">ENABLE</div>
+                </div>
+            </td>
         </tr>
         {{/each}}
     </tbody>
@@ -40,17 +57,63 @@
     <thead>
     <tr>
         <th>Name</th>
-        <th>State</th>
-        <th>Actions</th>
+        <th class="center aligned">State</th>
+        <th class="center aligned"></th>
     </tr>
     </thead>
     <tbody>
     {{#each info.reporters}}
         <tr>
             <td><b>{{this.name}}</b></td>
-            <td> <a class="ui mini label {{this.state}}">{{this.state}}</a></td>
-            <td></td>
+            <td class="center aligned"> <a class="ui label {{this.state}}">{{this.state}}</a></td>
+            <td class="right aligned">
+                <div class="ui icon mini primary basic button"><i class="file code outline icon"></i> LOGS</div>
+                <div class="ui mini buttons basic">
+                    <button class="ui button basic {{#ifeq this.state 'STOPPED'}}active{{/ifeq}}" onclick="setReporterState({{this.index}}, 0)">DISABLE</button>
+                    <div class="ui button {{#ifeq this.state 'RUNNING'}}active{{/ifeq}}" onclick="setReporterState({{this.index}}, 1)">ENABLE</div>
+                </div>
+            </td>
         </tr>
     {{/each}}
     </tbody>
 </table>
+
+<script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
+<script>
+    window.OneSignal = window.OneSignal || [];
+    OneSignal.push(function() {
+        OneSignal.init({
+            appId: "9f791247-81f4-4edc-ab0a-2a89b7842284",
+        });
+    });
+</script>
+
+<script>
+    async function postData(url = '', data = {}) {
+        const response = await fetch(url, {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json'
+            },
+
+        });
+        return response.json();
+    }
+
+    async function setTaskState(i, val){
+        await postData('/task', {index: i, state: val});
+        window.location.reload();
+    }
+
+    async function setRunnerState(val){
+        await postData('/runner', { state: val});
+        window.location.reload();
+    }
+
+    async function setReporterState(i, val){
+        await postData('/reporter', {index: i, state: val});
+        window.location.reload();
+    }
+
+</script>

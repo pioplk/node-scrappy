@@ -18,7 +18,7 @@ export class PhilipsLoyalMeScrapTask extends Base implements Runnable{
         this.getAvailableModels().then(models => this.previousData = models);
     }
 
-    public async run(timestamp: number): Promise<RunResult>{
+    public async run(): Promise<RunResult>{
         let models = await this.getAvailableModels();
 
         return this.createRunResult(models);

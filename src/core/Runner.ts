@@ -1,26 +1,33 @@
 import {Runnable, RunResult} from "./Runnable";
-import {Reportable, ReportResult} from "./Reportable";
+import {Reportable} from "./Reportable";
+import {Base} from "./Base";
+import {State} from "./State";
 
-export class Runner{
+export class Runner extends Base{
     tasks: Runnable[] = [];
     reporters: Reportable[] = [];
-    timeout: number = 60000;
+    timeout: number = 5000;
     runsCount: number = 0;
+    lastRunTimestamp: number = 0;
 
     public init(){
         this.scheduleNextRun(this.timeout);
-        console.log("Runner initialized")
+        this.setState(State.RUNNING)
     }
 
     async run(){
-        const timestamp = Date.now();
-
-        for(let task of this.tasks){
-            const result: RunResult = await task.run(timestamp);
-            await this.report(result);
+        if(this.getState() === State.RUNNING){
+            for(let task of this.tasks){
+                const result: RunResult = await task.run();
+                await this.report(result);
+            }
+            this.completeRun();
         }
+    }
 
+    private completeRun(){
         this.runsCount++;
+        this.lastRunTimestamp = Date.now()
         this.scheduleNextRun(this.timeout);
     }
 
@@ -54,12 +61,22 @@ export class Runner{
         this.reporters.splice(this.reporters.indexOf(reporter), 1);
     }
 
+    setReporterState(state: State, index: number){
+        this.reporters[index].setState(state);
+    }
+
+    setTaskState(state: State, index: number){
+        this.tasks[index].setState(state);
+    }
+
     getInfo(){
         return{
-            tasks: this.tasks.map(task => {return { name: task.NAME, state: task.getState()}}),
-            reporters: this.reporters.map(reporter => {return {name: reporter.NAME, state: reporter.getState()}}),
+            tasks: this.tasks.map((task, i) => {return { name: task.NAME, state: task.getState(), index: i}}),
+            reporters: this.reporters.map((reporter, i) => {return {name: reporter.NAME, state: reporter.getState(), index: i}}),
             timeout: this.timeout,
             runsCount: this.runsCount,
+            lastRun: this.lastRunTimestamp,
+            state: this.getState()
         }
     }
 }

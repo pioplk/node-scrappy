@@ -7,7 +7,7 @@ import {Base} from "./Base";
 
 export interface Runnable extends Base{
     readonly NAME: string;
-    run(timestamp: number): Promise<RunResult>;
+    run(): Promise<RunResult>;
 }
 
 export interface RunResult{

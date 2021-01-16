@@ -2,9 +2,6 @@
     background: red;
 }
 
-table{
-    table-layout: fixed;
-}
 
 a.label.RUNNING{
     background-color: #62d268;

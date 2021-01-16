@@ -3,7 +3,7 @@ import {State} from "./State";
 export class Base{
     protected state!: State;
 
-    protected setState(state: State): void{
+    public setState(state: State): void{
         this.state = state;
     }
 
