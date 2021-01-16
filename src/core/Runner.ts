@@ -6,7 +6,7 @@ import {State} from "./State";
 export class Runner extends Base{
     tasks: Runnable[] = [];
     reporters: Reportable[] = [];
-    timeout: number = 5000;
+    timeout: number = 60000;
     runsCount: number = 0;
     lastRunTimestamp: number = 0;
 
