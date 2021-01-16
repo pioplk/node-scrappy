@@ -5,6 +5,7 @@ import {RunResult} from "./Runnable";
  * Each Reportable need to return Promise with valid ReportResult for Logging purpose
  */
 export interface Reportable{
+    readonly NAME: string;
     report(result: RunResult): Promise<ReportResult>;
 }
 

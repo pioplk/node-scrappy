@@ -4,6 +4,7 @@ import {Client} from "onesignal-node";
 import {ONE_SIGNAL} from "../config";
 
 export class OneSignalReporter implements Reportable{
+    readonly NAME: string = "ONE_SIGNAL_REPORTER";
     private client: Client = new Client(ONE_SIGNAL.APP_ID, ONE_SIGNAL.API_KEY);
 
     async report(result: RunResult): Promise<ReportResult> {
