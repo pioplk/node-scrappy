@@ -3,8 +3,9 @@
  * Each Runnable need to return Promise with valid RunResult for Reporting purpose
  */
 import {CreateNotificationBody} from "onesignal-node/lib/types";
+import {Base} from "./Base";
 
-export interface Runnable{
+export interface Runnable extends Base{
     readonly NAME: string;
     run(timestamp: number): Promise<RunResult>;
 }

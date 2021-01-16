@@ -5,6 +5,7 @@ export class Runner{
     tasks: Runnable[] = [];
     reporters: Reportable[] = [];
     timeout: number = 60000;
+    runsCount: number = 0;
 
     public init(){
         this.scheduleNextRun(this.timeout);
@@ -19,6 +20,7 @@ export class Runner{
             await this.report(result);
         }
 
+        this.runsCount++;
         this.scheduleNextRun(this.timeout);
     }
 
@@ -50,5 +52,14 @@ export class Runner{
 
     removeReporter(reporter: Reportable){
         this.reporters.splice(this.reporters.indexOf(reporter), 1);
+    }
+
+    getInfo(){
+        return{
+            tasks: this.tasks.map(task => {return { name: task.NAME, state: task.getState()}}),
+            reporters: this.reporters.map(reporter => {return {name: reporter.NAME, state: reporter.getState()}}),
+            timeout: this.timeout,
+            runsCount: this.runsCount,
+        }
     }
 }

@@ -2,8 +2,10 @@ import cheerio from 'cheerio'
 import axios from "axios";
 import {Runnable, RunResult} from "../core/Runnable";
 import {CreateNotificationBody} from "onesignal-node/lib/types";
+import {Base} from "../core/Base";
+import {State} from "../core/State";
 
-export class PhilipsLoyalMeScrapTask implements Runnable{
+export class PhilipsLoyalMeScrapTask extends Base implements Runnable{
     readonly NAME = "PHILLIPS_LOYAL_ME";
 
     protected readonly URL = "https://www.philips.pl/sklep/PL_Loyalmenow";
@@ -11,6 +13,8 @@ export class PhilipsLoyalMeScrapTask implements Runnable{
     protected previousData: string[] = []
 
     constructor() {
+        super();
+        this.setState(State.RUNNING);
         this.getAvailableModels().then(models => this.previousData = models);
     }
 

@@ -1,10 +1,11 @@
 import {RunResult} from "./Runnable";
+import {Base} from "./Base";
 
 /**
  * Reportable interface for Reporters implementation, used in Runner.
  * Each Reportable need to return Promise with valid ReportResult for Logging purpose
  */
-export interface Reportable{
+export interface Reportable extends Base{
     readonly NAME: string;
     report(result: RunResult): Promise<ReportResult>;
 }

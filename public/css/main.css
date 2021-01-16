@@ -1,3 +1,22 @@
 .logo{
     background: red;
 }
+
+table{
+    table-layout: fixed;
+}
+
+a.label.RUNNING{
+    background-color: #62d268;
+    color: #fff;
+}
+
+a.label.ERROR{
+    background: #f44336;
+    color: #fff;
+}
+
+a.label.IDLE{
+    background: #9e9e9e42;
+    color: #9e9e9e;
+}
