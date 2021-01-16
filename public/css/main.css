@@ -3,17 +3,17 @@
 }
 
 
-a.label.RUNNING{
+span.label.RUNNING{
     background-color: #62d268;
     color: #fff;
 }
 
-a.label.ERROR{
+span.label.ERROR{
     background: #f44336;
     color: #fff;
 }
 
-a.label.IDLE{
+span.label.IDLE{
     background: #9e9e9e42;
     color: #9e9e9e;
 }

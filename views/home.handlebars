@@ -14,7 +14,7 @@
             <td><b>{{info.runsCount}}</b></td>
             <td>{{info.timeout}}</td>
             <td>{{info.lastRun}}</td>
-            <td class="center aligned"><a class="ui label {{info.state}}">{{info.state}}</a></td>
+            <td class="center aligned"><span class="ui label {{info.state}}">{{info.state}}</span></td>
             <td class="right aligned">
                 <div class="ui icon mini primary basic button"><i class="file code outline icon"></i> LOGS</div>
                 <div class="ui mini basic buttons">
@@ -39,7 +39,7 @@
         {{#each info.tasks}}
         <tr class="{{this.state}}">
             <td><b>{{this.name}}</b></td>
-            <td class="center aligned"> <a class="ui label {{this.state}}">{{this.state}}</a></td>
+            <td class="center aligned"> <span class="ui label {{this.state}}">{{this.state}}</span></td>
             <td class="right aligned">
                 <div class="ui icon mini primary basic button"><i class="file code outline icon"></i> LOGS</div>
                 <div class="ui mini basic buttons">
@@ -65,7 +65,7 @@
     {{#each info.reporters}}
         <tr>
             <td><b>{{this.name}}</b></td>
-            <td class="center aligned"> <a class="ui label {{this.state}}">{{this.state}}</a></td>
+            <td class="center aligned"> <span class="ui label {{this.state}}">{{this.state}}</span></td>
             <td class="right aligned">
                 <div class="ui icon mini primary basic button"><i class="file code outline icon"></i> LOGS</div>
                 <div class="ui mini buttons basic">
