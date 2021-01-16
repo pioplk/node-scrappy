@@ -1,8 +1,11 @@
 import cheerio from 'cheerio'
 import axios from "axios";
 import {Runnable, RunResult} from "../core/Runnable";
+import {CreateNotificationBody} from "onesignal-node/lib/types";
 
 export class PhilipsLoyalMeScrapTask implements Runnable{
+    readonly NAME = "PHILLIPS_LOYAL_ME";
+
     protected readonly URL = "https://www.philips.pl/sklep/PL_Loyalmenow";
     protected readonly HUNT_FOR_MODELS = ["EP2220/10", "EP3241/50", "EP2231/40", "EP3246/70", "EP3243/50"];
     protected previousData: string[] = []
@@ -36,16 +39,21 @@ export class PhilipsLoyalMeScrapTask implements Runnable{
         this.previousData = models;
 
         return {
-            taskName: "SCRAP",
-            notify: huntedModels.length > 0,
-            data: huntedModels.length && {
+            name: this.NAME,
+            notification: this.createNotification(huntedModels),
+            data: {
                 models: huntedModels,
-                notification: {
-                    headings: "New Philips models available!",
-                    subtitle: models.toString(),
-                    url: this.URL
-                }
             }
         }
+    }
+
+    private createNotification(models: string[]): CreateNotificationBody | null{
+        return models.length ? {
+            headings: {en: "New Philips models available!"},
+            subtitle: {en: models.toString()},
+            contents: {en: models.concat('\n')},
+            url: this.URL,
+            included_segments: ['Subscribed Users']
+        } : null;
     }
 }
