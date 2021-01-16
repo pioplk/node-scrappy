@@ -1,0 +1,4 @@
+export const ONE_SIGNAL = {
+    APP_ID: "9f791247-81f4-4edc-ab0a-2a89b7842284",
+    API_KEY: "MDA5OWM4M2ItYzFmNi00MDNmLWFiNjUtNWU2MzgxZjM3OTIx"
+}

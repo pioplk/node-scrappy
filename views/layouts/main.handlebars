@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Scrappy</title>
+    <link rel="stylesheet" href="/css/main.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"
+          integrity="sha512-8bHTC73gkZ7rZ7vpqUQThUDhqcNFyYi2xgDgPDHc+GXVGHXq+xPjynxIopALmOPqzo9JZj0k6OqqewdGO3EsrQ=="
+          crossorigin="anonymous"/>
+</head>
+<body>
+
+<div class="ui fixed inverted menu">
+    <div class="ui container">
+        <a href="#" class="header item">
+            <span class="logo"></span>
+            Scrappy
+        </a>
+    </div>
+</div>
+
+<div class="ui main text container">
+    <h1 class="ui header">Semantic UI Fixed Template</h1>
+    {{{body}}}
+</div>
+
+<script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
+<script>
+    window.OneSignal = window.OneSignal || [];
+    OneSignal.push(function() {
+        OneSignal.init({
+            appId: "9f791247-81f4-4edc-ab0a-2a89b7842284",
+        });
+    });
+</script>
+</body>
+</html>
