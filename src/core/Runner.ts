@@ -4,7 +4,7 @@ import {Reportable, ReportResult} from "./Reportable";
 export class Runner{
     tasks: Runnable[] = [];
     reporters: Reportable[] = [];
-    timeout: number = 5000;
+    timeout: number = 60000;
 
     public init(){
         this.scheduleNextRun(this.timeout);
