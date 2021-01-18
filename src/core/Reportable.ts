@@ -6,7 +6,6 @@ import {Base} from "./Base";
  * Each Reportable need to return Promise with valid ReportResult for Logging purpose
  */
 export interface Reportable extends Base{
-    readonly NAME: string;
     report(result: RunResult): Promise<ReportResult>;
 }
 

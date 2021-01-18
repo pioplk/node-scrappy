@@ -1,5 +1,5 @@
 <h3>Runner</h3>
-<table class="ui stripped table">
+<table class="ui stripped table unstackable">
     <thead>
     <tr>
         <th>Runs Count</th>
@@ -10,50 +10,64 @@
     </tr>
     </thead>
     <tbody>
-        <tr>
-            <td><b>{{info.runsCount}}</b></td>
-            <td>{{info.timeout}}</td>
-            <td>{{info.lastRun}}</td>
-            <td class="center aligned"><span class="ui label {{info.state}}">{{info.state}}</span></td>
-            <td class="right aligned">
-                <div class="ui icon mini primary basic button"><i class="file code outline icon"></i> LOGS</div>
-                <div class="ui mini basic buttons">
-                    <div class="ui button {{#ifeq info.state 'STOPPED'}}active{{/ifeq}}" onclick="setRunnerState(0)">DISABLE</div>
-                    <div class="ui button {{#ifeq info.state 'RUNNING'}}active{{/ifeq}}" onclick="setRunnerState(1)">ENABLE</div>
+    <tr>
+        <td><b>{{info.runsCount}}</b></td>
+        <td>{{info.timeout}}</td>
+        <td>{{info.lastRun}}</td>
+        <td class="center aligned"><span class="ui label {{info.state}}">{{info.state}}</span></td>
+        <td class="right aligned">
+            <a class="ui icon mini primary basic button" href="/runner/logs">
+                <i class="file code outline icon"></i>
+                {{#if this.logsCount}}<div class="floating ui red label">{{info.logsCount}}</div>{{/if}}
+                LOGS</a>
+            <div class="ui mini basic buttons">
+                <div class="ui button {{#ifeq info.state 'STOPPED'}}active{{/ifeq}}" onclick="setRunnerState(0)">
+                    DISABLE
                 </div>
-            </td>
-        </tr class="center aligned">
+                <div class="ui button {{#ifeq info.state 'RUNNING'}}active{{/ifeq}}" onclick="setRunnerState(1)">
+                    ENABLE
+                </div>
+            </div>
+        </td>
+    </tr class="center aligned">
     </tbody>
 </table>
 
 <h3>Tasks</h3>
-<table class="ui stripped table">
+<table class="ui table unstackable">
     <thead>
-        <tr>
-            <th>Name</th>
-            <th class="center aligned">State</th>
-            <th class="center aligned"></th>
-        </tr>
+    <tr>
+        <th>Name</th>
+        <th class="center aligned">State</th>
+        <th class="center aligned"></th>
+    </tr>
     </thead>
     <tbody>
-        {{#each info.tasks}}
+    {{#each info.tasks}}
         <tr class="{{this.state}}">
             <td><b>{{this.name}}</b></td>
-            <td class="center aligned"> <span class="ui label {{this.state}}">{{this.state}}</span></td>
+            <td class="center aligned"><span class="ui label {{this.state}}">{{this.state}}</span></td>
             <td class="right aligned">
-                <div class="ui icon mini primary basic button"><i class="file code outline icon"></i> LOGS</div>
+                <a class="ui icon mini primary basic button" href="/task/logs/{{this.index}}">
+                    <i class="file code outline icon"></i>
+                    {{#if this.logsCount}}<div class="floating ui red label">{{this.logsCount}}</div>{{/if}}
+                    LOGS</a>
                 <div class="ui mini basic buttons">
-                    <div class="ui button {{#ifeq this.state 'STOPPED'}}active{{/ifeq}}" onclick="setTaskState({{this.index}}, 0)">DISABLE</div>
-                    <div class="ui button {{#ifeq this.state 'RUNNING'}}active{{/ifeq}}" onclick="setTaskState({{this.index}}, 1)">ENABLE</div>
+                    <div class="ui button {{#ifeq this.state 'STOPPED'}}active{{/ifeq}}"
+                         onclick="setTaskState({{this.index}}, 0)">DISABLE
+                    </div>
+                    <div class="ui button {{#ifeq this.state 'RUNNING'}}active{{/ifeq}}"
+                         onclick="setTaskState({{this.index}}, 1)">ENABLE
+                    </div>
                 </div>
             </td>
         </tr>
-        {{/each}}
+    {{/each}}
     </tbody>
 </table>
 
 <h3>Reporters</h3>
-<table class="ui compact table">
+<table class="ui table unstackable">
     <thead>
     <tr>
         <th>Name</th>
@@ -65,12 +79,19 @@
     {{#each info.reporters}}
         <tr>
             <td><b>{{this.name}}</b></td>
-            <td class="center aligned"> <span class="ui label {{this.state}}">{{this.state}}</span></td>
+            <td class="center aligned"><span class="ui label {{this.state}}">{{this.state}}</span></td>
             <td class="right aligned">
-                <div class="ui icon mini primary basic button"><i class="file code outline icon"></i> LOGS</div>
+                <a class="ui icon mini primary basic button" href="/reporter/logs/{{this.index}}">
+                    <i class="file code outline icon"></i>
+                    {{#if this.logsCount}}<div class="floating ui red label">{{this.logsCount}}</div>{{/if}}
+                    LOGS</a>
                 <div class="ui mini buttons basic">
-                    <button class="ui button basic {{#ifeq this.state 'STOPPED'}}active{{/ifeq}}" onclick="setReporterState({{this.index}}, 0)">DISABLE</button>
-                    <div class="ui button {{#ifeq this.state 'RUNNING'}}active{{/ifeq}}" onclick="setReporterState({{this.index}}, 1)">ENABLE</div>
+                    <button class="ui button basic {{#ifeq this.state 'STOPPED'}}active{{/ifeq}}"
+                            onclick="setReporterState({{this.index}}, 0)">DISABLE
+                    </button>
+                    <div class="ui button {{#ifeq this.state 'RUNNING'}}active{{/ifeq}}"
+                         onclick="setReporterState({{this.index}}, 1)">ENABLE
+                    </div>
                 </div>
             </td>
         </tr>
@@ -81,7 +102,7 @@
 <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
 <script>
     window.OneSignal = window.OneSignal || [];
-    OneSignal.push(function() {
+    OneSignal.push(function () {
         OneSignal.init({
             appId: "9f791247-81f4-4edc-ab0a-2a89b7842284",
         });
@@ -101,17 +122,17 @@
         return response.json();
     }
 
-    async function setTaskState(i, val){
+    async function setTaskState(i, val) {
         await postData('/task', {index: i, state: val});
         window.location.reload();
     }
 
-    async function setRunnerState(val){
-        await postData('/runner', { state: val});
+    async function setRunnerState(val) {
+        await postData('/runner', {state: val});
         window.location.reload();
     }
 
-    async function setReporterState(i, val){
+    async function setReporterState(i, val) {
         await postData('/reporter', {index: i, state: val});
         window.location.reload();
     }

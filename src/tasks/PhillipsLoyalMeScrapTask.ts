@@ -3,18 +3,14 @@ import axios from "axios";
 import {Runnable, RunResult} from "../core/Runnable";
 import {CreateNotificationBody} from "onesignal-node/lib/types";
 import {Base} from "../core/Base";
-import {State} from "../core/State";
 
 export class PhilipsLoyalMeScrapTask extends Base implements Runnable{
-    readonly NAME = "PHILLIPS_LOYAL_ME";
-
     protected readonly URL = "https://www.philips.pl/sklep/PL_Loyalmenow";
     protected readonly HUNT_FOR_MODELS = ["EP2220/10", "EP3241/50", "EP2231/40", "EP3246/70", "EP3243/50"];
     protected previousData: string[] = []
 
     constructor() {
-        super();
-        this.setState(State.RUNNING);
+        super("PHILLIPS_LOYAL_ME")
         this.getAvailableModels().then(models => this.previousData = models);
     }
 
@@ -41,6 +37,10 @@ export class PhilipsLoyalMeScrapTask extends Base implements Runnable{
             model => models.includes(model) && !this.previousData.includes(model));
 
         this.previousData = models;
+
+        if (huntedModels.length){
+            this.logger.log("Hunted models: " + huntedModels.join(', '))
+        }
 
         return {
             name: this.NAME,

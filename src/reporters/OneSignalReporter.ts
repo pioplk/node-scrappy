@@ -6,21 +6,21 @@ import {State} from "../core/State";
 import {Base} from "../core/Base";
 
 export class OneSignalReporter extends Base implements Reportable{
-    readonly NAME: string = "ONE_SIGNAL_REPORTER";
     private client: Client = new Client(ONE_SIGNAL.APP_ID, ONE_SIGNAL.API_KEY);
 
     constructor() {
-        super();
-        this.setState(State.RUNNING);
+        super("ONE_SIGNAL_REPORTER")
     }
     async report(result: RunResult): Promise<ReportResult> {
-        if(result.notification && this.state === State.RUNNING){
+        if(result.notification && this.isRunning()){
+            this.logger.log(JSON.stringify(result.notification));
+
             await this.client.createNotification(result.notification).catch(e => {
-                console.log(e)
+                this.logger.log(JSON.stringify(e));
                 this.setState(State.ERROR);
             });
         }
 
-        return Promise.resolve({success: this.state !== State.ERROR});
+        return Promise.resolve({success: !this.isError()});
     }
 }

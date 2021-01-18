@@ -2,22 +2,26 @@ import {Runnable, RunResult} from "./Runnable";
 import {Reportable} from "./Reportable";
 import {Base} from "./Base";
 import {State} from "./State";
+import {Logger} from "./Logger";
 
-export class Runner extends Base{
+export class Runner extends Base {
     tasks: Runnable[] = [];
     reporters: Reportable[] = [];
-    timeout: number = 60000;
+    timeout: number = 6000;
     runsCount: number = 0;
     lastRunTimestamp: number = 0;
 
-    public init(){
-        this.scheduleNextRun(this.timeout);
-        this.setState(State.RUNNING)
+    constructor() {
+        super("RUNNER")
     }
 
-    async run(){
-        if(this.getState() === State.RUNNING){
-            for(let task of this.tasks){
+    public init() {
+        this.scheduleNextRun(this.timeout);
+    }
+
+    async run() {
+        if (this.isRunning()) {
+            for (let task of this.tasks) {
                 const result: RunResult = await task.run();
                 await this.report(result);
             }
@@ -25,58 +29,87 @@ export class Runner extends Base{
         }
     }
 
-    private completeRun(){
-        this.runsCount++;
-        this.lastRunTimestamp = Date.now()
-        this.scheduleNextRun(this.timeout);
-    }
-
-    async report(result: RunResult): Promise<any>{
-        for(let reporter of this.reporters){
+    async report(result: RunResult): Promise<any> {
+        for (let reporter of this.reporters) {
             await reporter.report(result);
         }
     }
 
-    scheduleNextRun(timeout: number){
-        setTimeout(()=> this.run(), timeout);
+    scheduleNextRun(timeout: number) {
+        setTimeout(() => this.run(), timeout);
     }
 
-    setTimeout(timeout: number): void{
+    setTimeout(timeout: number): void {
         this.timeout = timeout;
     }
 
-    addTask(task: Runnable){
+    addTask(task: Runnable) {
         this.tasks.push(task);
     }
 
-    removeTask(task: Runnable){
+    removeTask(task: Runnable) {
         this.tasks.splice(this.tasks.indexOf(task), 1);
     }
 
-    addReporter(reporter: Reportable){
+    addReporter(reporter: Reportable) {
         this.reporters.push(reporter);
     }
 
-    removeReporter(reporter: Reportable){
+    removeReporter(reporter: Reportable) {
         this.reporters.splice(this.reporters.indexOf(reporter), 1);
     }
 
-    setReporterState(state: State, index: number){
+    setReporterState(state: State, index: number) {
         this.reporters[index].setState(state);
     }
 
-    setTaskState(state: State, index: number){
+    setTaskState(state: State, index: number) {
         this.tasks[index].setState(state);
     }
 
-    getInfo(){
-        return{
-            tasks: this.tasks.map((task, i) => {return { name: task.NAME, state: task.getState(), index: i}}),
-            reporters: this.reporters.map((reporter, i) => {return {name: reporter.NAME, state: reporter.getState(), index: i}}),
+    getReporterLogs(index: number): string[] {
+        return this.reporters[index].logger.getLogs();
+    }
+
+    clearReporterLogs(index: number){
+        this.reporters[index].logger.clearLogs();
+    }
+
+    getReporterName(index: number): string {
+        return this.reporters[index].NAME;
+    }
+
+    getTaskLogs(index: number): string[] {
+        return this.tasks[index].logger.getLogs();
+    }
+
+    clearTaskLogs(index: number){
+        this.tasks[index].logger.clearLogs();
+    }
+
+    getTaskName(index: number): string {
+        return this.tasks[index].NAME;
+    }
+
+    getInfo() {
+        return {
+            tasks: this.tasks.map((task, i) => {
+                return {name: task.NAME, state: task.getState(), index: i, logsCount: task.logger.getLogsCount()}
+            }),
+            reporters: this.reporters.map((reporter, i) => {
+                return {name: reporter.NAME, state: reporter.getState(), index: i, logsCount: reporter.logger.getLogsCount()}
+            }),
+            logsCount: this.logger.getLogsCount(),
             timeout: this.timeout,
             runsCount: this.runsCount,
             lastRun: this.lastRunTimestamp,
             state: this.getState()
         }
+    }
+
+    private completeRun() {
+        this.runsCount++;
+        this.lastRunTimestamp = Date.now()
+        this.scheduleNextRun(this.timeout);
     }
 }
