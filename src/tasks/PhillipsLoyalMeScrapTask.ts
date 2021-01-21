@@ -55,7 +55,7 @@ export class PhilipsLoyalMeScrapTask extends Base implements Runnable{
         return models.length ? {
             headings: {en: "New Philips models available!"},
             subtitle: {en: models.toString()},
-            contents: {en: models.concat('\n')},
+            contents: {en: models.join('\n')},
             url: this.URL,
             included_segments: ['Subscribed Users']
         } : null;
