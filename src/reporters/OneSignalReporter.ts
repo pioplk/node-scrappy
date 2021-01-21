@@ -13,10 +13,10 @@ export class OneSignalReporter extends Base implements Reportable{
     }
     async report(result: RunResult): Promise<ReportResult> {
         if(result.notification && this.isRunning()){
-            this.logger.log(JSON.stringify(result.notification));
+            this.logger.info(JSON.stringify(result.notification));
 
             await this.client.createNotification(result.notification).catch(e => {
-                this.logger.log(JSON.stringify(e));
+                this.logger.error(JSON.stringify(e));
                 this.setState(State.ERROR);
             });
         }

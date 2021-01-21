@@ -18,7 +18,7 @@
         <td class="right aligned">
             <a class="ui icon mini primary basic button" href="/runner/logs">
                 <i class="file code outline icon"></i>
-                {{#if this.logsCount}}<div class="floating ui red label">{{info.logsCount}}</div>{{/if}}
+                {{#if info.logsCount}}<div class="floating ui red label">{{info.logsCount}}</div>{{/if}}
                 LOGS</a>
             <div class="ui mini basic buttons">
                 <div class="ui button {{#ifeq info.state 'STOPPED'}}active{{/ifeq}}" onclick="setRunnerState(0)">

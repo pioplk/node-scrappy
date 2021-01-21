@@ -9,10 +9,12 @@ export class Base{
     constructor(name: string) {
         this.NAME = name;
         this.logger = new Logger(this.NAME);
+        this.logger.info(`${this.NAME} initialized`);
     }
 
     public setState(state: State): void{
         this.state = state;
+        this.logger.warning(`State changed to: ${state}`)
     }
 
     public getState(): State{

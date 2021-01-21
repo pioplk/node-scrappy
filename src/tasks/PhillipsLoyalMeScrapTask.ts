@@ -39,7 +39,7 @@ export class PhilipsLoyalMeScrapTask extends Base implements Runnable{
         this.previousData = models;
 
         if (huntedModels.length){
-            this.logger.log("Hunted models: " + huntedModels.join(', '))
+            this.logger.info("Hunted models: " + huntedModels.join(', '))
         }
 
         return {

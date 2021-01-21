@@ -1,8 +1,3 @@
-.logo{
-    background: red;
-}
-
-
 span.label.RUNNING{
     background-color: #62d268;
     color: #fff;
@@ -16,6 +11,11 @@ span.label.ERROR{
 span.label.IDLE{
     background: #9e9e9e42;
     color: #9e9e9e;
+}
+
+span.label.WARNING{
+    background: #ee9536;
+    color: #fff;
 }
 
 .ui.mini.button, .ui.mini.buttons .button, .ui.mini.buttons .or {

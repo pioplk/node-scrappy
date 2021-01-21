@@ -1,3 +1,9 @@
+<br>
+<a class="ui icon mini basic button" href="?type=INFO">INFO</a>
+<a class="ui icon mini basic button" href="?type=WARNING">WARNING</a>
+<a class="ui icon mini basic button" href="?type=ERROR">ERROR</a>
+<a class="ui icon mini basic button" href="?">ALL</a>
+
 <table class="ui stripped compact table unstackable logs">
     <thead>
     <tr>
@@ -11,7 +17,10 @@
     <tbody>
     {{#each logs}}
          <tr>
-            <td>{{this}}</td>
+            <td class="{{this.type}}">
+                <span class="ui label {{this.type}}">{{this.type}}</span>
+                {{this.message}}
+            </td>
         </tr class="center aligned">
     {{/each}}
 

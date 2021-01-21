@@ -33,9 +33,9 @@ app.post('/task', (req: Request, res: any) => {
     const {index, state} = req.body as any;
 
     if (!state) {
-        runner.setTaskState(State.STOPPED, index);
+        runner.getTask(index).setState(State.STOPPED);
     } else {
-        runner.setTaskState(State.RUNNING, index);
+        runner.getTask(index).setState(State.RUNNING);
     }
     res.send(JSON.stringify({success: true}));
 });
@@ -44,9 +44,9 @@ app.post('/reporter', (req: Request, res: any) => {
     const {index, state} = req.body as any;
 
     if (!state) {
-        runner.setReporterState(State.STOPPED, index);
+        runner.getReporter(index).setState(State.STOPPED);
     } else {
-        runner.setReporterState(State.RUNNING, index);
+        runner.getReporter(index).setState(State.RUNNING);
     }
     res.send(JSON.stringify({success: true}));
 });
@@ -62,33 +62,39 @@ app.post('/runner', (req: Request, res: any) => {
     res.send(JSON.stringify({success: true}));
 });
 
-app.get('/runner/logs', (req: Request, res: any) => res.render('logs', {
-    logs: runner.logger.getLogs(),
+app.get('/runner/logs', (req: any, res: any) => res.render('logs', {
+    logs: runner.logger.getLogs(req.query.type),
     name: runner.NAME
 }));
-app.get('/task/logs/:index', (req: any, res: any) => res.render('logs', {
-    logs: runner.getTaskLogs(req.params.index),
-    name: runner.getTaskName(req.params.index)
-}));
-app.get('/reporter/logs/:index', (req: any, res: any) => res.render('logs', {
-    logs: runner.getReporterLogs(req.params.index),
-    name: runner.getReporterName(req.params.index)
+
+app.post('/runner/logs', (req: any, res: any) => res.render('logs', {
+    logs: runner.logger.clearLogs(req.query.type),
+    name: runner.NAME
 }));
 
-app.post('/reporter/logs/:index', (req: any, res: any) => {
-    runner.clearReporterLogs(req.params.index);
-    res.send(JSON.stringify({success: true}));
-});
+app.get('/task/logs/:index', (req: any, res: any) => res.render('logs', {
+    logs: runner.getTask(req.params.index).logger.getLogs(req.query.type),
+    name: runner.getTask(req.params.index).NAME
+}));
 
 app.post('/task/logs/:index', (req: any, res: any) => {
-    runner.clearTaskLogs(req.params.index);
+    runner.getTask(req.params.index).logger.clearLogs(req.query.type);
     res.send(JSON.stringify({success: true}));
 });
 
-app.post('/runner/logs', (req: any, res: any) => {
-    runner.logger.clearLogs();
+app.get('/reporter/logs/:index', (req: any, res: any) => {
+    res.render('logs', {
+        logs: runner.getReporter(req.params.index).logger.getLogs(req.query.type),
+        name: runner.getReporter(req.params.index).NAME
+    })
+});
+
+app.post('/reporter/logs/:index', (req: any, res: any) => {
+    runner.getReporter(req.params.index).logger.clearLogs(req.query.type);
     res.send(JSON.stringify({success: true}));
 });
+
+
 
 
 

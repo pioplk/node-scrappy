@@ -1,8 +1,6 @@
 import {Runnable, RunResult} from "./Runnable";
 import {Reportable} from "./Reportable";
 import {Base} from "./Base";
-import {State} from "./State";
-import {Logger} from "./Logger";
 
 export class Runner extends Base {
     tasks: Runnable[] = [];
@@ -59,36 +57,12 @@ export class Runner extends Base {
         this.reporters.splice(this.reporters.indexOf(reporter), 1);
     }
 
-    setReporterState(state: State, index: number) {
-        this.reporters[index].setState(state);
+    getTask(index: number): Runnable{
+        return this.tasks[index];
     }
 
-    setTaskState(state: State, index: number) {
-        this.tasks[index].setState(state);
-    }
-
-    getReporterLogs(index: number): string[] {
-        return this.reporters[index].logger.getLogs();
-    }
-
-    clearReporterLogs(index: number){
-        this.reporters[index].logger.clearLogs();
-    }
-
-    getReporterName(index: number): string {
-        return this.reporters[index].NAME;
-    }
-
-    getTaskLogs(index: number): string[] {
-        return this.tasks[index].logger.getLogs();
-    }
-
-    clearTaskLogs(index: number){
-        this.tasks[index].logger.clearLogs();
-    }
-
-    getTaskName(index: number): string {
-        return this.tasks[index].NAME;
+    getReporter(index: number): Reportable{
+        return this.reporters[index];
     }
 
     getInfo() {
